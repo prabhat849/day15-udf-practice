@@ -1,0 +1,171 @@
+[info] running (fork) Day15UDFPractice 
+Picked up JAVA_TOOL_OPTIONS: --add-opens=java.base/sun.nio.ch=ALL-UNNAMED
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+26/10/09 04:52:10 WARN Utils: Your hostname, LAPTOP-EGSE3CEJ resolves to a loopback address: 127.0.1.1; using 10.255.255.254 instead (on interface lo)
+26/10/09 04:52:10 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+26/10/09 04:52:11 INFO SparkContext: Running Spark version 3.5.9
+26/10/09 04:52:11 INFO SparkContext: OS info Linux, 6.18.33.2-microsoft-standard-WSL2, amd64
+26/10/09 04:52:11 INFO SparkContext: Java version 17.0.20
+26/10/09 04:52:11 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/10/09 04:52:11 INFO ResourceUtils: ==============================================================
+26/10/09 04:52:11 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/10/09 04:52:11 INFO ResourceUtils: ==============================================================
+26/10/09 04:52:11 INFO SparkContext: Submitted application: Day15-UDF-Practice
+26/10/09 04:52:11 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/10/09 04:52:11 INFO ResourceProfile: Limiting resource is cpu
+26/10/09 04:52:11 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/10/09 04:52:11 INFO SecurityManager: Changing view acls to: prabhat
+26/10/09 04:52:11 INFO SecurityManager: Changing modify acls to: prabhat
+26/10/09 04:52:11 INFO SecurityManager: Changing view acls groups to: 
+26/10/09 04:52:11 INFO SecurityManager: Changing modify acls groups to: 
+26/10/09 04:52:11 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: prabhat; groups with view permissions: EMPTY; users with modify permissions: prabhat; groups with modify permissions: EMPTY
+26/10/09 04:52:12 INFO Utils: Successfully started service 'sparkDriver' on port 36277.
+26/10/09 04:52:12 INFO SparkEnv: Registering MapOutputTracker
+26/10/09 04:52:12 INFO SparkEnv: Registering BlockManagerMaster
+26/10/09 04:52:12 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/10/09 04:52:12 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/10/09 04:52:12 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/10/09 04:52:12 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-aa0af153-dc5c-448d-919c-303a17db0a59
+26/10/09 04:52:12 INFO MemoryStore: MemoryStore started with capacity 988.8 MiB
+26/10/09 04:52:12 INFO SparkEnv: Registering OutputCommitCoordinator
+26/10/09 04:52:12 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/10/09 04:52:12 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/10/09 04:52:12 INFO Executor: Starting executor ID driver on host 10.255.255.254
+26/10/09 04:52:12 INFO Executor: OS info Linux, 6.18.33.2-microsoft-standard-WSL2, amd64
+26/10/09 04:52:12 INFO Executor: Java version 17.0.20
+26/10/09 04:52:12 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+26/10/09 04:52:12 INFO Executor: Created or updated repl class loader org.apache.spark.util.MutableURLClassLoader@ff23ae7 for default.
+26/10/09 04:52:13 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 36597.
+26/10/09 04:52:13 INFO NettyBlockTransferService: Server created on 10.255.255.254:36597
+26/10/09 04:52:13 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/10/09 04:52:13 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 10.255.255.254, 36597, None)
+26/10/09 04:52:13 INFO BlockManagerMasterEndpoint: Registering block manager 10.255.255.254:36597 with 988.8 MiB RAM, BlockManagerId(driver, 10.255.255.254, 36597, None)
+26/10/09 04:52:13 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 10.255.255.254, 36597, None)
+26/10/09 04:52:13 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 10.255.255.254, 36597, None)
+========================================
+DAY 15 - UDF PRACTICE
+========================================
+
+===== ORIGINAL EMPLOYEE DATA =====
++---+-------+--------+
+|id |name   |salary  |
++---+-------+--------+
+|1  |Prabhat|25000.0 |
+|2  |Rahul  |45000.0 |
+|3  |Amit   |75000.0 |
+|4  |Sneha  |120000.0|
+|5  |Priya  |60000.0 |
+|6  |Arjun  |28000.0 |
+|7  |Neha   |55000.0 |
+|8  |Karan  |95000.0 |
+|9  |Anjali |35000.0 |
+|10 |Rohit  |85000.0 |
+|11 |Pooja  |150000.0|
+|12 |Vikram |18000.0 |
++---+-------+--------+
+
+
+===== SALARY CLASSIFICATION USING UDF =====
++---+-------+--------+-----------+
+|id |name   |salary  |salary_band|
++---+-------+--------+-----------+
+|1  |Prabhat|25000.0 |Low        |
+|2  |Rahul  |45000.0 |Medium     |
+|3  |Amit   |75000.0 |High       |
+|4  |Sneha  |120000.0|Very High  |
+|5  |Priya  |60000.0 |High       |
+|6  |Arjun  |28000.0 |Low        |
+|7  |Neha   |55000.0 |Medium     |
+|8  |Karan  |95000.0 |High       |
+|9  |Anjali |35000.0 |Medium     |
+|10 |Rohit  |85000.0 |High       |
+|11 |Pooja  |150000.0|Very High  |
+|12 |Vikram |18000.0 |Low        |
++---+-------+--------+-----------+
+
+
+===== SALARY CLASSIFICATION USING BUILT-IN FUNCTIONS =====
++---+-------+--------+-----------+
+|id |name   |salary  |salary_band|
++---+-------+--------+-----------+
+|1  |Prabhat|25000.0 |Low        |
+|2  |Rahul  |45000.0 |Medium     |
+|3  |Amit   |75000.0 |High       |
+|4  |Sneha  |120000.0|Very High  |
+|5  |Priya  |60000.0 |High       |
+|6  |Arjun  |28000.0 |Low        |
+|7  |Neha   |55000.0 |Medium     |
+|8  |Karan  |95000.0 |High       |
+|9  |Anjali |35000.0 |Medium     |
+|10 |Rohit  |85000.0 |High       |
+|11 |Pooja  |150000.0|Very High  |
+|12 |Vikram |18000.0 |Low        |
++---+-------+--------+-----------+
+
+
+===== REGISTERED UDF USING SPARK SQL =====
++---+-------+--------+-----------+
+|id |name   |salary  |salary_band|
++---+-------+--------+-----------+
+|1  |Prabhat|25000.0 |Low        |
+|2  |Rahul  |45000.0 |Medium     |
+|3  |Amit   |75000.0 |High       |
+|4  |Sneha  |120000.0|Very High  |
+|5  |Priya  |60000.0 |High       |
+|6  |Arjun  |28000.0 |Low        |
+|7  |Neha   |55000.0 |Medium     |
+|8  |Karan  |95000.0 |High       |
+|9  |Anjali |35000.0 |Medium     |
+|10 |Rohit  |85000.0 |High       |
+|11 |Pooja  |150000.0|Very High  |
+|12 |Vikram |18000.0 |Low        |
++---+-------+--------+-----------+
+
+
+===== CUSTOMER RISK CATEGORY USING UDF =====
++-----------+-------------+-----------------+-------------+
+|customer_id|customer_name|transaction_value|risk_category|
++-----------+-------------+-----------------+-------------+
+|C101       |Asha         |500.0            |Low Risk     |
+|C102       |Vikram       |3500.0           |Medium Risk  |
+|C103       |Neha         |8000.0           |High Risk    |
+|C104       |Rohan        |15000.0          |High Risk    |
+|C105       |Meera        |2000.0           |Medium Risk  |
+|C106       |Arjun        |750.0            |Low Risk     |
+|C107       |Priya        |4500.0           |Medium Risk  |
+|C108       |Karan        |12000.0          |High Risk    |
+|C109       |Anjali       |950.0            |Low Risk     |
+|C110       |Rahul        |6000.0           |High Risk    |
+|C111       |Pooja        |25000.0          |High Risk    |
+|C112       |Rohit        |4200.0           |Medium Risk  |
++-----------+-------------+-----------------+-------------+
+
+
+===== CUSTOMER RISK USING BUILT-IN FUNCTIONS =====
++-----------+-------------+-----------------+-------------+
+|customer_id|customer_name|transaction_value|risk_category|
++-----------+-------------+-----------------+-------------+
+|C101       |Asha         |500.0            |Low Risk     |
+|C102       |Vikram       |3500.0           |Medium Risk  |
+|C103       |Neha         |8000.0           |High Risk    |
+|C104       |Rohan        |15000.0          |High Risk    |
+|C105       |Meera        |2000.0           |Medium Risk  |
+|C106       |Arjun        |750.0            |Low Risk     |
+|C107       |Priya        |4500.0           |Medium Risk  |
+|C108       |Karan        |12000.0          |High Risk    |
+|C109       |Anjali       |950.0            |Low Risk     |
+|C110       |Rahul        |6000.0           |High Risk    |
+|C111       |Pooja        |25000.0          |High Risk    |
+|C112       |Rohit        |4200.0           |Medium Risk  |
++-----------+-------------+-----------------+-------------+
+
+
+===== DAY 15 CONCEPTS =====
+UDF: Executes custom user-defined logic.
+withColumn: Adds or replaces a DataFrame column.
+Built-in functions: Prefer these when they fit the requirement.
+SQL registration: Makes a UDF callable by its registered name.
+
+DAY 15 COMPLETED SUCCESSFULLY
+[success] elapsed time: 14 s
+[0J
